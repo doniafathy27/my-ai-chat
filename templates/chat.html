@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My AI</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="sidebar" id="sidebar">
+
+
+        <div class="sidebar-header">
+
+            <h2>My AI</h2>
+
+        </div>
+
+
+        <!-- New Chat -->
+
+        <button
+            class="new-chat-button"
+            id="newChat"
+        >
+
+            <span>＋</span>
+
+            New Chat
+
+        </button>
+
+
+        <!-- Search -->
+
+        <div class="sidebar-tools">
+
+            <input
+                type="text"
+                id="searchChats"
+                placeholder="Search chats..."
+            >
+
+        </div>
+
+
+        <!-- Chat List -->
+
+        <div
+            class="chat-list"
+            id="chatList"
+        >
+        </div>
+
+
+        <!-- Sidebar Bottom -->
+
+        <div class="sidebar-bottom">
+
+
+            <!-- Export -->
+
+            <div class="export-section">
+
+                <div class="export-label">
+                    ⇩ Export Chat
+                </div>
+
+
+                <div class="export-buttons">
+
+                    <button
+                        id="exportTxt"
+                    >
+                        TXT
+                    </button>
+
+
+                    <button
+                        id="exportJson"
+                    >
+                        JSON
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Clear Current Chat -->
+
+            <button
+                class="sidebar-button"
+                id="clearChat"
+            >
+
+                🗑 Clear Chat
+
+            </button>
+
+
+            <!-- Clear All Chats -->
+
+            <button
+                class="sidebar-button"
+                id="clearAll"
+            >
+
+                🗑 Clear All
+
+            </button>
+
+
+            <!-- Theme -->
+
+            <button
+                class="sidebar-button"
+                id="themeToggle"
+            >
+
+                ☀ Light Mode
+
+            </button>
+
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <main class="main">
+
+
+        <!-- Top Bar -->
+
+        <header class="topbar">
+
+
+            <button
+                class="menu-button"
+                id="openSidebar"
+            >
+
+                ☰
+
+            </button>
+
+
+            <h3 id="chatTitle">
+                New Chat
+            </h3>
+
+
+        </header>
+
+
+
+        <!-- =========================
+             CHAT
+        ========================== -->
+
+        <section
+            class="chat-container"
+            id="chatContainer"
+        >
+
+
+            <div
+                class="welcome"
+                id="welcome"
+            >
+
+
+                <div class="welcome-icon">
+                    ✦
+                </div>
+
+
+                <h1>
+                    How can I help you?
+                </h1>
+
+
+                <p>
+                    Ask anything and start a conversation.
+                </p>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =========================
+             INPUT
+        ========================== -->
+
+        <div class="input-area">
+
+
+            <form id="chatForm">
+
+
+                <textarea
+                    id="messageInput"
+                    placeholder="Message My AI..."
+                    rows="1"
+                ></textarea>
+
+
+                <button
+                    type="submit"
+                    id="sendButton"
+                >
+
+                    ↑
+
+                </button>
+
+
+            </form>
+
+
+            <p class="disclaimer">
+
+                AI can make mistakes.
+                Check important information.
+
+            </p>
+
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- Markdown -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
+></script>
+
+
+<!-- Main JavaScript -->
+
+<script
+    src="{{ url_for('static', filename='script.js') }}"
+></script>
+
+
+</body>
+
+</html>
