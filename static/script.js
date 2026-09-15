@@ -15,53 +15,21 @@ let currentController = null;
    ELEMENTS
 ========================= */
 
-const chatContainer =
-    document.getElementById("chatContainer");
-
-const chatList =
-    document.getElementById("chatList");
-
-const chatForm =
-    document.getElementById("chatForm");
-
-const messageInput =
-    document.getElementById("messageInput");
-
-const sendButton =
-    document.getElementById("sendButton");
-
-const chatTitle =
-    document.getElementById("chatTitle");
-
-const sidebar =
-    document.getElementById("sidebar");
-
-const menuButton =
-    document.getElementById("openSidebar");
-
-const sidebarOverlay =
-    document.getElementById("sidebarOverlay");
-
-const newChatButton =
-    document.getElementById("newChat");
-
-const clearChatButton =
-    document.getElementById("clearChat");
-
-const clearAllButton =
-    document.getElementById("clearAll");
-
-const themeToggle =
-    document.getElementById("themeToggle");
-
-const searchChats =
-    document.getElementById("searchChats");
-
-const exportTxt =
-    document.getElementById("exportTxt");
-
-const exportJson =
-    document.getElementById("exportJson");
+const chatContainer = document.getElementById("chatContainer");
+const chatList = document.getElementById("chatList");
+const chatForm = document.getElementById("chatForm");
+const messageInput = document.getElementById("messageInput");
+const sendButton = document.getElementById("sendButton");
+const chatTitle = document.getElementById("chatTitle");
+const sidebar = document.getElementById("sidebar");
+const menuButton = document.getElementById("openSidebar");
+const newChatButton = document.getElementById("newChat");
+const clearChatButton = document.getElementById("clearChat");
+const clearAllButton = document.getElementById("clearAll");
+const themeToggle = document.getElementById("themeToggle");
+const searchChats = document.getElementById("searchChats");
+const exportTxt = document.getElementById("exportTxt");
+const exportJson = document.getElementById("exportJson");
 
 
 /* =========================
@@ -89,13 +57,9 @@ function saveConversations() {
 function createChat() {
 
     const chat = {
-
         id: Date.now().toString(),
-
         title: "New Chat",
-
         messages: []
-
     };
 
     conversations.unshift(chat);
@@ -105,9 +69,7 @@ function createChat() {
     saveConversations();
 
     renderChatList();
-
     renderCurrentChat();
-
 }
 
 
@@ -120,7 +82,6 @@ function getCurrentChat() {
     return conversations.find(
         chat => chat.id === currentChatId
     );
-
 }
 
 
@@ -135,11 +96,7 @@ function openChat(id) {
     saveConversations();
 
     renderChatList();
-
     renderCurrentChat();
-
-    closeMobileSidebar();
-
 }
 
 
@@ -158,32 +115,22 @@ function renderChatList(filter = "") {
                 .includes(filter.toLowerCase())
         );
 
-
     filtered.forEach(chat => {
 
-        const item =
-            document.createElement("div");
+        const item = document.createElement("div");
 
         item.className = "chat-item";
 
         if (chat.id === currentChatId) {
-
             item.classList.add("active");
-
         }
 
-
-        const title =
-            document.createElement("div");
+        const title = document.createElement("div");
 
         title.className = "chat-item-title";
+        title.textContent = chat.title;
 
-        title.textContent =
-            chat.title;
-
-
-        const actions =
-            document.createElement("div");
+        const actions = document.createElement("div");
 
         actions.className = "chat-actions";
 
@@ -192,9 +139,7 @@ function renderChatList(filter = "") {
             document.createElement("button");
 
         renameButton.textContent = "✎";
-
         renameButton.title = "Rename";
-
 
         renameButton.addEventListener(
             "click",
@@ -203,7 +148,6 @@ function renderChatList(filter = "") {
                 event.stopPropagation();
 
                 renameChat(chat.id);
-
             }
         );
 
@@ -212,9 +156,7 @@ function renderChatList(filter = "") {
             document.createElement("button");
 
         deleteButton.textContent = "×";
-
         deleteButton.title = "Delete";
-
 
         deleteButton.addEventListener(
             "click",
@@ -223,18 +165,14 @@ function renderChatList(filter = "") {
                 event.stopPropagation();
 
                 deleteChat(chat.id);
-
             }
         );
 
 
         actions.appendChild(renameButton);
-
         actions.appendChild(deleteButton);
 
-
         item.appendChild(title);
-
         item.appendChild(actions);
 
 
@@ -245,9 +183,7 @@ function renderChatList(filter = "") {
 
 
         chatList.appendChild(item);
-
     });
-
 }
 
 
@@ -277,8 +213,7 @@ function renameChat(id) {
         newTitle.trim()
     ) {
 
-        chat.title =
-            newTitle.trim();
+        chat.title = newTitle.trim();
 
         saveConversations();
 
@@ -288,11 +223,8 @@ function renameChat(id) {
 
             chatTitle.textContent =
                 chat.title;
-
         }
-
     }
-
 }
 
 
@@ -303,9 +235,7 @@ function renameChat(id) {
 function deleteChat(id) {
 
     const confirmed =
-        confirm(
-            "Delete this chat?"
-        );
+        confirm("Delete this chat?");
 
     if (!confirmed) return;
 
@@ -326,18 +256,14 @@ function deleteChat(id) {
         } else {
 
             currentChatId = null;
-
         }
-
     }
 
 
     saveConversations();
 
     renderChatList();
-
     renderCurrentChat();
-
 }
 
 
@@ -347,28 +273,22 @@ function deleteChat(id) {
 
 function renderCurrentChat() {
 
-    const chat =
-        getCurrentChat();
-
+    const chat = getCurrentChat();
 
     chatContainer.innerHTML = "";
 
 
     if (!chat) {
 
-        chatTitle.textContent =
-            "New Chat";
-
+        chatTitle.textContent = "New Chat";
 
         showWelcome();
 
         return;
-
     }
 
 
-    chatTitle.textContent =
-        chat.title;
+    chatTitle.textContent = chat.title;
 
 
     if (chat.messages.length === 0) {
@@ -376,25 +296,21 @@ function renderCurrentChat() {
         showWelcome();
 
         return;
-
     }
 
 
-    chat.messages.forEach(
-        message => {
+    chat.messages.forEach(message => {
 
-            addMessageToUI(
-                message.role,
-                message.content,
-                false
-            );
+        addMessageToUI(
+            message.role,
+            message.content,
+            false
+        );
 
-        }
-    );
+    });
 
 
     scrollToBottom();
-
 }
 
 
@@ -425,11 +341,7 @@ function showWelcome() {
 
     `;
 
-
-    chatContainer.appendChild(
-        welcome
-    );
-
+    chatContainer.appendChild(welcome);
 }
 
 
@@ -445,7 +357,6 @@ function escapeHTML(text) {
     div.textContent = text;
 
     return div.innerHTML;
-
 }
 
 
@@ -455,19 +366,13 @@ function escapeHTML(text) {
 
 function renderMarkdown(content) {
 
-    if (
-        typeof marked !== "undefined"
-    ) {
+    if (typeof marked !== "undefined") {
 
-        return marked.parse(
-            content
-        );
-
+        return marked.parse(content);
     }
 
     return escapeHTML(content)
         .replace(/\n/g, "<br>");
-
 }
 
 
@@ -483,7 +388,6 @@ function addMessageToUI(
 
     const message =
         document.createElement("div");
-
 
     message.className =
         `message ${role === "user" ? "user" : "ai"}`;
@@ -507,10 +411,7 @@ function addMessageToUI(
         messageContent.innerHTML =
             renderMarkdown(content);
 
-        addCodeCopyButtons(
-            messageContent
-        );
-
+        addCodeCopyButtons(messageContent);
     }
 
 
@@ -519,8 +420,7 @@ function addMessageToUI(
         const header =
             document.createElement("div");
 
-        header.className =
-            "message-header";
+        header.className = "message-header";
 
         header.innerHTML = `
 
@@ -532,31 +432,21 @@ function addMessageToUI(
 
         `;
 
-
         message.appendChild(header);
-
     }
 
 
-    message.appendChild(
-        messageContent
-    );
+    message.appendChild(messageContent);
 
-
-    chatContainer.appendChild(
-        message
-    );
+    chatContainer.appendChild(message);
 
 
     if (scroll) {
-
         scrollToBottom();
-
     }
 
 
     return message;
-
 }
 
 
@@ -575,8 +465,7 @@ function addCodeCopyButtons(container) {
         const wrapper =
             document.createElement("div");
 
-        wrapper.className =
-            "code-block";
+        wrapper.className = "code-block";
 
 
         pre.parentNode.insertBefore(
@@ -594,8 +483,7 @@ function addCodeCopyButtons(container) {
         button.className =
             "copy-code-button";
 
-        button.textContent =
-            "Copy";
+        button.textContent = "Copy";
 
 
         button.addEventListener(
@@ -609,28 +497,23 @@ function addCodeCopyButtons(container) {
                     code
                 );
 
-                button.textContent =
-                    "Copied!";
+                button.textContent = "Copied!";
 
 
                 setTimeout(
                     () => {
 
-                        button.textContent =
-                            "Copy";
+                        button.textContent = "Copy";
 
                     },
                     1500
                 );
-
             }
         );
 
 
         wrapper.appendChild(button);
-
     });
-
 }
 
 
@@ -642,7 +525,6 @@ function scrollToBottom() {
 
     chatContainer.scrollTop =
         chatContainer.scrollHeight;
-
 }
 
 
@@ -665,9 +547,7 @@ chatForm.addEventListener(
 
 
         if (!currentChatId) {
-
             createChat();
-
         }
 
 
@@ -678,16 +558,13 @@ chatForm.addEventListener(
         if (!chat) return;
 
 
-        if (
-            chat.messages.length === 0
-        ) {
+        if (chat.messages.length === 0) {
 
             chat.title =
                 text.substring(0, 30);
 
             chatTitle.textContent =
                 chat.title;
-
         }
 
 
@@ -696,7 +573,6 @@ chatForm.addEventListener(
             role: "user",
 
             content: text
-
         });
 
 
@@ -716,9 +592,7 @@ chatForm.addEventListener(
         autoGrow();
 
 
-        sendButton.disabled =
-            true;
-
+        sendButton.disabled = true;
 
         showLoading();
 
@@ -737,22 +611,17 @@ chatForm.addEventListener(
                         method: "POST",
 
                         headers: {
-
                             "Content-Type":
                                 "application/json"
-
                         },
 
                         body: JSON.stringify({
-
                             messages:
                                 chat.messages
-
                         }),
 
                         signal:
                             currentController.signal
-
                     }
                 );
 
@@ -772,7 +641,6 @@ chatForm.addEventListener(
                 );
 
                 return;
-
             }
 
 
@@ -780,9 +648,7 @@ chatForm.addEventListener(
 
                 role: "assistant",
 
-                content:
-                    data.message
-
+                content: data.message
             });
 
 
@@ -808,17 +674,14 @@ chatForm.addEventListener(
                     "assistant",
                     "Something went wrong. Please try again."
                 );
-
             }
+
 
         } finally {
 
-            sendButton.disabled =
-                false;
+            sendButton.disabled = false;
 
-            currentController =
-                null;
-
+            currentController = null;
         }
 
     }
@@ -834,11 +697,9 @@ function showLoading() {
     const loading =
         document.createElement("div");
 
-    loading.className =
-        "message ai";
+    loading.className = "message ai";
 
-    loading.id =
-        "loadingMessage";
+    loading.id = "loadingMessage";
 
 
     loading.innerHTML = `
@@ -864,13 +725,9 @@ function showLoading() {
     `;
 
 
-    chatContainer.appendChild(
-        loading
-    );
-
+    chatContainer.appendChild(loading);
 
     scrollToBottom();
-
 }
 
 
@@ -881,13 +738,9 @@ function removeLoading() {
             "loadingMessage"
         );
 
-
     if (loading) {
-
         loading.remove();
-
     }
-
 }
 
 
@@ -900,8 +753,6 @@ newChatButton.addEventListener(
     () => {
 
         createChat();
-
-        closeMobileSidebar();
 
     }
 );
@@ -923,9 +774,7 @@ clearChatButton.addEventListener(
 
 
         const confirmed =
-            confirm(
-                "Clear this chat?"
-            );
+            confirm("Clear this chat?");
 
 
         if (!confirmed) return;
@@ -936,7 +785,6 @@ clearChatButton.addEventListener(
         saveConversations();
 
         renderCurrentChat();
-
     }
 );
 
@@ -950,9 +798,7 @@ clearAllButton.addEventListener(
     () => {
 
         const confirmed =
-            confirm(
-                "Delete all chats?"
-            );
+            confirm("Delete all chats?");
 
 
         if (!confirmed) return;
@@ -967,7 +813,6 @@ clearAllButton.addEventListener(
         renderChatList();
 
         renderCurrentChat();
-
     }
 );
 
@@ -996,22 +841,16 @@ themeToggle.addEventListener(
     "click",
     () => {
 
-        document.body.classList.toggle(
-            "dark"
-        );
+        document.body.classList.toggle("dark");
 
 
         const isDark =
-            document.body.classList.contains(
-                "dark"
-            );
+            document.body.classList.contains("dark");
 
 
         localStorage.setItem(
             "theme",
-            isDark
-                ? "dark"
-                : "light"
+            isDark ? "dark" : "light"
         );
 
 
@@ -1031,22 +870,16 @@ themeToggle.addEventListener(
 function loadTheme() {
 
     const theme =
-        localStorage.getItem(
-            "theme"
-        );
+        localStorage.getItem("theme");
 
 
     if (theme === "dark") {
 
-        document.body.classList.add(
-            "dark"
-        );
+        document.body.classList.add("dark");
 
         themeToggle.textContent =
             "☀ Light Mode";
-
     }
-
 }
 
 
@@ -1054,30 +887,29 @@ function loadTheme() {
    SIDEBAR TOGGLE
 ========================= */
 
-menuButton.addEventListener("click", () => {
+menuButton.addEventListener(
+    "click",
+    () => {
 
-    sidebar.classList.toggle("hidden");
+        sidebar.classList.toggle("hidden");
 
-});
-
+    }
+);
 
 
 /* =========================
-   AUTO GROW TEXTAREA
+   AUTO GROW
 ========================= */
 
 function autoGrow() {
 
-    messageInput.style.height =
-        "auto";
-
+    messageInput.style.height = "auto";
 
     messageInput.style.height =
         Math.min(
             messageInput.scrollHeight,
             160
         ) + "px";
-
 }
 
 
@@ -1103,25 +935,6 @@ messageInput.addEventListener(
             event.preventDefault();
 
             chatForm.requestSubmit();
-
-        }
-
-    }
-);
-
-
-/* =========================
-   ABORT REQUEST
-========================= */
-
-sendButton.addEventListener(
-    "click",
-    () => {
-
-        if (currentController) {
-
-            currentController.abort();
-
         }
 
     }
@@ -1150,7 +963,6 @@ exportTxt.addEventListener(
             );
 
             return;
-
         }
 
 
@@ -1158,20 +970,18 @@ exportTxt.addEventListener(
             `CHAT DPT - ${chat.title}\n\n`;
 
 
-        chat.messages.forEach(
-            message => {
+        chat.messages.forEach(message => {
 
-                const sender =
-                    message.role === "user"
-                        ? "You"
-                        : "CHAT DPT";
+            const sender =
+                message.role === "user"
+                    ? "You"
+                    : "CHAT DPT";
 
 
-                text +=
-                    `${sender}:\n${message.content}\n\n`;
+            text +=
+                `${sender}:\n${message.content}\n\n`;
 
-            }
-        );
+        });
 
 
         downloadFile(
@@ -1203,7 +1013,6 @@ exportJson.addEventListener(
             );
 
             return;
-
         }
 
 
@@ -1243,9 +1052,7 @@ function downloadFile(
 
 
     const url =
-        URL.createObjectURL(
-            blob
-        );
+        URL.createObjectURL(blob);
 
 
     const link =
@@ -1260,7 +1067,6 @@ function downloadFile(
 
 
     URL.revokeObjectURL(url);
-
 }
 
 
@@ -1273,6 +1079,7 @@ function initialize() {
     loadTheme();
 
     sidebar.classList.add("hidden");
+
 
     if (conversations.length === 0) {
 
@@ -1289,15 +1096,19 @@ function initialize() {
 
             currentChatId =
                 conversations[0].id;
-
         }
 
-        renderChatList();
-        renderCurrentChat();
-        saveConversations();
 
+        renderChatList();
+
+        renderCurrentChat();
+
+        saveConversations();
     }
 
-    autoGrow();
 
+    autoGrow();
 }
+
+
+initialize();

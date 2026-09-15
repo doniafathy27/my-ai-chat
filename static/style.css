@@ -3,52 +3,30 @@
 ========================= */
 
 :root {
-
     --bg: #ffffff;
-
     --sidebar: #f7f7f8;
-
     --text: #202123;
-
     --text-secondary: #6b6b6b;
-
     --border: #e5e5e5;
-
     --hover: #ececec;
-
     --input: #ffffff;
-
     --user-message: #f1f1f1;
-
     --code-bg: #f6f6f6;
-
     --shadow: rgba(0, 0, 0, 0.08);
-
 }
 
 
 body.dark {
-
     --bg: #212121;
-
     --sidebar: #171717;
-
     --text: #ececec;
-
     --text-secondary: #a0a0a0;
-
     --border: #333333;
-
     --hover: #2a2a2a;
-
     --input: #2f2f2f;
-
     --user-message: #303030;
-
     --code-bg: #181818;
-
     --shadow: rgba(0, 0, 0, 0.3);
-
 }
 
 
@@ -63,14 +41,11 @@ body.dark {
 
 html,
 body {
-
     margin: 0;
-
     padding: 0;
-
     width: 100%;
-
     height: 100%;
+    overflow: hidden;
 
     font-family:
         Arial,
@@ -78,9 +53,7 @@ body {
         sans-serif;
 
     background: var(--bg);
-
     color: var(--text);
-
 }
 
 
@@ -89,15 +62,10 @@ body {
 ========================= */
 
 .app {
-
     display: flex;
-
     width: 100%;
-
-    height: 100vh;
-
+    height: 100dvh;
     overflow: hidden;
-
 }
 
 
@@ -106,15 +74,12 @@ body {
 ========================= */
 
 .sidebar {
-
     width: 260px;
-
-    height: 100vh;
+    height: 100dvh;
 
     flex-shrink: 0;
 
     display: flex;
-
     flex-direction: column;
 
     padding: 14px;
@@ -126,22 +91,13 @@ body {
     overflow: hidden;
 
     transition:
-        width 0.25s ease,
-        padding 0.25s ease;
-
+        width 0.2s ease,
+        padding 0.2s ease;
 }
 
 
 .sidebar.hidden {
-
-    width: 0;
-
-    padding-left: 0;
-
-    padding-right: 0;
-
-    border-right: none;
-
+    display: none;
 }
 
 
@@ -150,28 +106,22 @@ body {
 ========================= */
 
 .sidebar-header {
-
     display: flex;
-
     align-items: center;
 
     height: 40px;
 
     margin-bottom: 12px;
-
 }
 
 
 .sidebar-header h2 {
-
     margin: 0;
 
     font-size: 18px;
-
     font-weight: 600;
 
     white-space: nowrap;
-
 }
 
 
@@ -180,13 +130,10 @@ body {
 ========================= */
 
 .new-chat-button {
-
     width: 100%;
-
     height: 42px;
 
     display: flex;
-
     align-items: center;
 
     gap: 8px;
@@ -194,31 +141,24 @@ body {
     padding: 0 12px;
 
     border: 1px solid var(--border);
-
     border-radius: 8px;
 
     background: transparent;
-
     color: var(--text);
 
     font-size: 14px;
 
     cursor: pointer;
-
 }
 
 
 .new-chat-button:hover {
-
     background: var(--hover);
-
 }
 
 
 .new-chat-button span {
-
     font-size: 20px;
-
 }
 
 
@@ -227,41 +167,31 @@ body {
 ========================= */
 
 .sidebar-tools {
-
     margin-top: 12px;
-
     margin-bottom: 10px;
-
 }
 
 
 .sidebar-tools input {
-
     width: 100%;
-
     height: 38px;
 
     padding: 0 11px;
 
     border: 1px solid var(--border);
-
     border-radius: 7px;
 
     outline: none;
 
     background: var(--input);
-
     color: var(--text);
 
     font-size: 13px;
-
 }
 
 
 .sidebar-tools input:focus {
-
     border-color: #999;
-
 }
 
 
@@ -270,26 +200,20 @@ body {
 ========================= */
 
 .chat-list {
-
     flex: 1;
 
     overflow-y: auto;
 
     min-height: 0;
-
 }
 
 
 .chat-item {
-
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
 
     width: 100%;
-
     min-height: 40px;
 
     margin-bottom: 3px;
@@ -299,26 +223,20 @@ body {
     border-radius: 7px;
 
     cursor: pointer;
-
 }
 
 
 .chat-item:hover {
-
     background: var(--hover);
-
 }
 
 
 .chat-item.active {
-
     background: var(--hover);
-
 }
 
 
 .chat-item-title {
-
     overflow: hidden;
 
     white-space: nowrap;
@@ -326,21 +244,16 @@ body {
     text-overflow: ellipsis;
 
     font-size: 13px;
-
 }
 
 
 .chat-actions {
-
     display: flex;
-
     gap: 3px;
-
 }
 
 
 .chat-actions button {
-
     border: none;
 
     background: transparent;
@@ -352,14 +265,11 @@ body {
     padding: 3px;
 
     border-radius: 5px;
-
 }
 
 
 .chat-actions button:hover {
-
     background: var(--border);
-
 }
 
 
@@ -368,26 +278,20 @@ body {
 ========================= */
 
 .sidebar-bottom {
-
     margin-top: 10px;
 
     display: flex;
-
     flex-direction: column;
 
     gap: 7px;
-
 }
 
 
 .sidebar-button {
-
     width: 100%;
-
     height: 38px;
 
     border: none;
-
     border-radius: 7px;
 
     background: transparent;
@@ -401,14 +305,11 @@ body {
     cursor: pointer;
 
     font-size: 13px;
-
 }
 
 
 .sidebar-button:hover {
-
     background: var(--hover);
-
 }
 
 
@@ -417,40 +318,31 @@ body {
 ========================= */
 
 .export-section {
-
     padding: 8px 0;
-
 }
 
 
 .export-label {
-
     margin-bottom: 7px;
 
     font-size: 12px;
 
     color: var(--text-secondary);
-
 }
 
 
 .export-buttons {
-
     display: flex;
-
     gap: 6px;
-
 }
 
 
 .export-buttons button {
-
     flex: 1;
 
     height: 32px;
 
     border: 1px solid var(--border);
-
     border-radius: 6px;
 
     background: transparent;
@@ -460,14 +352,11 @@ body {
     cursor: pointer;
 
     font-size: 11px;
-
 }
 
 
 .export-buttons button:hover {
-
     background: var(--hover);
-
 }
 
 
@@ -476,21 +365,18 @@ body {
 ========================= */
 
 .main {
-
     position: relative;
 
     flex: 1;
 
     min-width: 0;
 
-    height: 100vh;
+    height: 100dvh;
 
     display: flex;
-
     flex-direction: column;
 
     background: var(--bg);
-
 }
 
 
@@ -499,17 +385,14 @@ body {
 ========================= */
 
 .topbar {
-
     position: relative;
 
     width: 100%;
-
     height: 60px;
 
     flex-shrink: 0;
 
     display: flex;
-
     align-items: center;
 
     padding: 0 18px;
@@ -518,19 +401,15 @@ body {
 
     background: var(--bg);
 
-    z-index: 100;
-
+    z-index: 300;
 }
 
 
 .topbar h3 {
-
     margin: 0;
 
     font-size: 14px;
-
     font-weight: 500;
-
 }
 
 
@@ -539,15 +418,11 @@ body {
 ========================= */
 
 .menu-button {
-
     width: 38px;
-
     height: 38px;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     flex-shrink: 0;
@@ -557,7 +432,6 @@ body {
     padding: 0;
 
     border: none;
-
     border-radius: 8px;
 
     background: transparent;
@@ -565,38 +439,21 @@ body {
     color: var(--text-secondary);
 
     font-size: 21px;
-
     line-height: 1;
 
     cursor: pointer;
-
 }
 
 
 .menu-button:hover {
-
     background: var(--hover);
 
     color: var(--text);
-
 }
 
 
 .menu-button:active {
-
     transform: scale(0.94);
-
-}
-
-
-/* =========================
-   OVERLAY
-========================= */
-
-.sidebar-overlay {
-
-    display: none;
-
 }
 
 
@@ -605,13 +462,11 @@ body {
 ========================= */
 
 .chat-container {
-
     flex: 1;
 
     overflow-y: auto;
 
     padding: 30px 20px 140px;
-
 }
 
 
@@ -620,64 +475,50 @@ body {
 ========================= */
 
 .welcome {
-
     min-height: 100%;
 
     display: flex;
-
     flex-direction: column;
 
     align-items: center;
-
     justify-content: center;
 
     text-align: center;
-
 }
 
 
 .welcome-icon {
-
     width: 55px;
-
     height: 55px;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     margin-bottom: 15px;
 
     border: 1px solid var(--border);
-
     border-radius: 50%;
 
     font-size: 25px;
-
 }
 
 
 .welcome h1 {
-
     margin: 0 0 8px;
 
     font-size: 28px;
 
     font-weight: 500;
-
 }
 
 
 .welcome p {
-
     margin: 0;
 
     color: var(--text-secondary);
 
     font-size: 14px;
-
 }
 
 
@@ -686,36 +527,29 @@ body {
 ========================= */
 
 .message {
-
     width: 100%;
 
     max-width: 850px;
 
     margin: 0 auto 24px;
-
 }
 
 
 .message.user {
-
     display: flex;
 
     justify-content: flex-end;
-
 }
 
 
 .message-content {
-
     line-height: 1.6;
 
     font-size: 15px;
-
 }
 
 
 .message.user .message-content {
-
     max-width: 75%;
 
     padding: 11px 15px;
@@ -723,14 +557,11 @@ body {
     border-radius: 14px;
 
     background: var(--user-message);
-
 }
 
 
 .message.ai .message-content {
-
     width: 100%;
-
 }
 
 
@@ -739,7 +570,6 @@ body {
 ========================= */
 
 .message-header {
-
     display: flex;
 
     align-items: center;
@@ -751,20 +581,16 @@ body {
     font-size: 12px;
 
     font-weight: 600;
-
 }
 
 
 .message-avatar {
-
     width: 25px;
-
     height: 25px;
 
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
     border-radius: 50%;
@@ -772,7 +598,6 @@ body {
     border: 1px solid var(--border);
 
     font-size: 12px;
-
 }
 
 
@@ -781,38 +606,29 @@ body {
 ========================= */
 
 .message-content p {
-
     margin: 8px 0;
-
 }
 
 
 .message-content ul,
 .message-content ol {
-
     padding-left: 25px;
-
 }
 
 
 .message-content li {
-
     margin: 5px 0;
-
 }
 
 
 .message-content h1,
 .message-content h2,
 .message-content h3 {
-
     margin-top: 20px;
-
 }
 
 
 .message-content code {
-
     padding: 2px 5px;
 
     border-radius: 4px;
@@ -824,21 +640,17 @@ body {
         monospace;
 
     font-size: 13px;
-
 }
 
 
 .code-block {
-
     position: relative;
 
     margin: 12px 0;
-
 }
 
 
 .code-block pre {
-
     overflow-x: auto;
 
     padding: 15px;
@@ -848,25 +660,20 @@ body {
     border-radius: 8px;
 
     background: var(--code-bg);
-
 }
 
 
 .code-block pre code {
-
     padding: 0;
 
     background: transparent;
-
 }
 
 
 .copy-code-button {
-
     position: absolute;
 
     top: 7px;
-
     right: 7px;
 
     padding: 5px 8px;
@@ -882,7 +689,6 @@ body {
     cursor: pointer;
 
     font-size: 11px;
-
 }
 
 
@@ -891,22 +697,18 @@ body {
 ========================= */
 
 .input-area {
-
     position: absolute;
 
     left: 50%;
-
     bottom: 15px;
 
     transform: translateX(-50%);
 
     width: min(850px, calc(100% - 30px));
-
 }
 
 
 #chatForm {
-
     display: flex;
 
     align-items: flex-end;
@@ -923,16 +725,13 @@ body {
 
     box-shadow:
         0 4px 20px var(--shadow);
-
 }
 
 
 #messageInput {
-
     flex: 1;
 
     min-height: 38px;
-
     max-height: 160px;
 
     padding: 9px 5px;
@@ -942,7 +741,6 @@ body {
     overflow-y: auto;
 
     border: none;
-
     outline: none;
 
     background: transparent;
@@ -952,14 +750,11 @@ body {
     font-family: inherit;
 
     font-size: 14px;
-
 }
 
 
 #sendButton {
-
     width: 38px;
-
     height: 38px;
 
     flex-shrink: 0;
@@ -975,28 +770,22 @@ body {
     font-size: 20px;
 
     cursor: pointer;
-
 }
 
 
 #sendButton:hover {
-
     opacity: 0.85;
-
 }
 
 
 #sendButton:disabled {
-
     opacity: 0.45;
 
     cursor: not-allowed;
-
 }
 
 
 .disclaimer {
-
     margin: 7px 0 0;
 
     text-align: center;
@@ -1004,7 +793,6 @@ body {
     color: var(--text-secondary);
 
     font-size: 10px;
-
 }
 
 
@@ -1013,20 +801,16 @@ body {
 ========================= */
 
 .typing {
-
     display: flex;
 
     gap: 4px;
 
     padding: 8px 0;
-
 }
 
 
 .typing span {
-
     width: 6px;
-
     height: 6px;
 
     border-radius: 50%;
@@ -1034,21 +818,16 @@ body {
     background: var(--text-secondary);
 
     animation: typing 1.2s infinite;
-
 }
 
 
 .typing span:nth-child(2) {
-
     animation-delay: 0.15s;
-
 }
 
 
 .typing span:nth-child(3) {
-
     animation-delay: 0.3s;
-
 }
 
 
@@ -1057,173 +836,99 @@ body {
     0%,
     60%,
     100% {
-
         opacity: 0.25;
 
         transform: translateY(0);
-
     }
 
     30% {
-
         opacity: 1;
 
         transform: translateY(-3px);
-
     }
-
 }
 
 
 /* =========================
-   RESPONSIVE / MOBILE
+   MOBILE
 ========================= */
 
-@media (max-width: 700px) {
-
-    .sidebar {
-    width: 260px;
-    height: 100vh;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    padding: 14px;
-    background: var(--sidebar);
-    border-right: 1px solid var(--border);
-    overflow: hidden;
-
-    transition:
-        width 0.25s ease,
-        padding 0.25s ease,
-        border 0.25s ease;
-}
-
-.sidebar.hidden {
-    width: 0;
-    padding-left: 0;
-    padding-right: 0;
-    border-right: none;
-}
-
-
-    .main {
-
-        width: 100%;
-
-        min-width: 0;
-
-        z-index: 1;
-
-    }
-
-
-    .topbar {
-
-        height: 56px;
-
-        padding: 0 12px;
-
-        z-index: 300;
-
-    }
-
-
-    .menu-button {
-
-        position: relative;
-
-        z-index: 301;
-
-    }
-
-
-
-    .chat-container {
-
-        padding: 25px 14px 130px;
-
-    }
-
-
-    .welcome h1 {
-
-        font-size: 23px;
-
-    }
-
-
-    .welcome p {
-
-        font-size: 13px;
-
-    }
-
-
-    .message.user .message-content {
-
-        max-width: 85%;
-
-    }
-
-
-    .input-area {
-
-        width: calc(100% - 20px);
-
-        bottom: 10px;
-
-    }
-
-
-    .disclaimer {
-
-        font-size: 9px;
-
-    }
-
-}
-/* =========================
-   EXTRA MOBILE FIX
-========================= */
-
-html,
-body {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
-}
 @media (max-width: 768px) {
 
     .sidebar {
         position: fixed;
+
         top: 0;
         left: 0;
-        bottom: 0;
 
         width: 260px;
-        height: 100vh;
+        height: 100dvh;
 
-        z-index: 200;
-    }
-
-    .sidebar.hidden {
-        width: 260px;
+        z-index: 400;
 
         padding: 14px;
 
-        border-right: 1px solid var(--border);
+        background: var(--sidebar);
 
-        transform: translateX(-100%);
+        border-right: 1px solid var(--border);
     }
+
+
+    .sidebar.hidden {
+        display: none;
+    }
+
+
+    .main {
+        width: 100%;
+        min-width: 0;
+    }
+
 
     .topbar {
-        position: relative;
-        z-index: 300;
+        height: 56px;
+
+        padding: 0 12px;
+
+        z-index: 500;
     }
+
 
     .menu-button {
         position: relative;
-        z-index: 301;
+
+        z-index: 501;
     }
 
+
+    .chat-container {
+        padding: 25px 14px 130px;
+    }
+
+
+    .welcome h1 {
+        font-size: 23px;
+    }
+
+
+    .welcome p {
+        font-size: 13px;
+    }
+
+
+    .message.user .message-content {
+        max-width: 85%;
+    }
+
+
+    .input-area {
+        width: calc(100% - 20px);
+
+        bottom: 10px;
+    }
+
+
+    .disclaimer {
+        font-size: 9px;
+    }
 }

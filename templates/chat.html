@@ -12,6 +12,7 @@
 
     <title>CHAT DPT</title>
 
+
     <link
         rel="stylesheet"
         href="{{ url_for('static', filename='style.css') }}"
@@ -25,11 +26,12 @@
 <div class="app">
 
 
-    <!-- =========================
-         SIDEBAR
-    ========================== -->
+    <!-- SIDEBAR -->
 
-    <aside class="sidebar" id="sidebar">
+    <aside
+        class="sidebar hidden"
+        id="sidebar"
+    >
 
         <div class="sidebar-header">
 
@@ -37,8 +39,6 @@
 
         </div>
 
-
-        <!-- New Chat -->
 
         <button
             class="new-chat-button"
@@ -52,8 +52,6 @@
         </button>
 
 
-        <!-- Search -->
-
         <div class="sidebar-tools">
 
             <input
@@ -65,20 +63,14 @@
         </div>
 
 
-        <!-- Chat List -->
-
         <div
             class="chat-list"
             id="chatList"
         ></div>
 
 
-        <!-- Sidebar Bottom -->
-
         <div class="sidebar-bottom">
 
-
-            <!-- Export -->
 
             <div class="export-section">
 
@@ -93,7 +85,6 @@
                         TXT
                     </button>
 
-
                     <button id="exportJson">
                         JSON
                     </button>
@@ -102,8 +93,6 @@
 
             </div>
 
-
-            <!-- Clear Current Chat -->
 
             <button
                 class="sidebar-button"
@@ -115,8 +104,6 @@
             </button>
 
 
-            <!-- Clear All Chats -->
-
             <button
                 class="sidebar-button"
                 id="clearAll"
@@ -126,8 +113,6 @@
 
             </button>
 
-
-            <!-- Theme -->
 
             <button
                 class="sidebar-button"
@@ -145,35 +130,36 @@
 
 
 
-    <!-- =========================
-         MAIN
-    ========================== -->
+    <!-- MAIN -->
 
     <main class="main">
 
 
-        <!-- Top Bar -->
+        <!-- TOPBAR -->
 
         <header class="topbar">
 
-    <button
-        class="menu-button"
-        id="openSidebar"
-        type="button"
-        aria-label="Toggle sidebar"
-    >
-        ☰
-    </button>
+            <button
+                class="menu-button"
+                id="openSidebar"
+                type="button"
+                aria-label="Toggle sidebar"
+            >
 
-    <h3 id="chatTitle">
-        New Chat
-    </h3>
+                ☰
 
-</header>
+            </button>
 
-        <!-- =========================
-             CHAT
-        ========================== -->
+
+            <h3 id="chatTitle">
+                New Chat
+            </h3>
+
+        </header>
+
+
+
+        <!-- CHAT -->
 
         <section
             class="chat-container"
@@ -205,13 +191,12 @@
 
 
 
-        <!-- =========================
-             INPUT
-        ========================== -->
+        <!-- INPUT -->
 
         <div class="input-area">
 
             <form id="chatForm">
+
 
                 <textarea
                     id="messageInput"
@@ -228,6 +213,7 @@
                     ↑
 
                 </button>
+
 
             </form>
 
@@ -248,14 +234,14 @@
 
 
 
-<!-- Markdown -->
+<!-- MARKDOWN -->
 
 <script
     src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
 ></script>
 
 
-<!-- Main JavaScript -->
+<!-- MAIN JAVASCRIPT -->
 
 <script
     src="{{ url_for('static', filename='script.js') }}"
