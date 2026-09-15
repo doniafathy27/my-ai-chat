@@ -1082,41 +1082,28 @@ body {
 @media (max-width: 700px) {
 
     .sidebar {
+    width: 260px;
+    height: 100vh;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 14px;
+    background: var(--sidebar);
+    border-right: 1px solid var(--border);
+    overflow: hidden;
 
-        position: fixed;
+    transition:
+        width 0.25s ease,
+        padding 0.25s ease,
+        border 0.25s ease;
+}
 
-        top: 0;
-
-        left: 0;
-
-        bottom: 0;
-
-        width: 260px;
-
-        height: 100vh;
-
-        z-index: 200;
-
-        box-shadow:
-            8px 0 30px rgba(0, 0, 0, 0.18);
-
-        transition:
-            transform 0.25s ease;
-
-    }
-
-
-    .sidebar.hidden {
-
-        width: 260px;
-
-        padding: 14px;
-
-        border-right: 1px solid var(--border);
-
-        transform: translateX(-100%);
-
-    }
+.sidebar.hidden {
+    width: 0;
+    padding-left: 0;
+    padding-right: 0;
+    border-right: none;
+}
 
 
     .main {
@@ -1149,27 +1136,6 @@ body {
 
     }
 
-
-    .sidebar-overlay {
-
-        position: fixed;
-
-        inset: 0;
-
-        display: none;
-
-        background: rgba(0, 0, 0, 0.25);
-
-        z-index: 150;
-
-    }
-
-
-    .sidebar-overlay.active {
-
-        display: block;
-
-    }
 
 
     .chat-container {
@@ -1226,83 +1192,38 @@ body {
     max-width: 100%;
     overflow-x: hidden;
 }
-
 @media (max-width: 768px) {
 
-    .app {
-        width: 100%;
-        max-width: 100%;
-        overflow: hidden;
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+
+        width: 260px;
+        height: 100vh;
+
+        z-index: 200;
     }
 
-    .main {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        overflow: hidden;
+    .sidebar.hidden {
+        width: 260px;
+
+        padding: 14px;
+
+        border-right: 1px solid var(--border);
+
+        transform: translateX(-100%);
     }
 
     .topbar {
-        width: 100%;
-        max-width: 100%;
+        position: relative;
+        z-index: 300;
     }
 
-    .chat-container {
-        width: 100%;
-        max-width: 100%;
-        overflow-x: hidden;
-    }
-
-    .input-area {
-        width: calc(100% - 20px);
-        max-width: calc(100% - 20px);
-    }
-
-    #chatForm {
-        width: 100%;
-        max-width: 100%;
-    }
-
-    #messageInput {
-        min-width: 0;
-        width: 100%;
-    }
-
-    .message {
-        width: 100%;
-        max-width: 100%;
-        overflow-wrap: break-word;
-        word-break: break-word;
-    }
-
-    .message-content {
-        max-width: 100%;
-        overflow-wrap: break-word;
-        word-break: break-word;
-    }
-
-    .message.user .message-content {
-        max-width: 85%;
-    }
-
-    .code-block {
-        max-width: 100%;
-        overflow-x: auto;
-    }
-
-    .code-block pre {
-        max-width: 100%;
-        overflow-x: auto;
-    }
-
-    .welcome {
-        width: 100%;
-        max-width: 100%;
-        padding: 20px;
-    }
-
-    .welcome h1 {
-        font-size: 23px;
+    .menu-button {
+        position: relative;
+        z-index: 301;
     }
 
 }

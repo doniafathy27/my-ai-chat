@@ -1054,64 +1054,12 @@ function loadTheme() {
    SIDEBAR TOGGLE
 ========================= */
 
-menuButton.addEventListener(
-    "click",
-    () => {
+menuButton.addEventListener("click", () => {
 
-        sidebar.classList.toggle(
-            "hidden"
-        );
+    sidebar.classList.toggle("hidden");
 
+});
 
-        if (
-            window.innerWidth <= 700
-        ) {
-
-            sidebarOverlay.classList.toggle(
-                "active"
-            );
-
-        }
-
-    }
-);
-
-
-/* =========================
-   CLOSE MOBILE SIDEBAR
-========================= */
-
-function closeMobileSidebar() {
-
-    if (
-        window.innerWidth <= 700
-    ) {
-
-        sidebar.classList.add(
-            "hidden"
-        );
-
-        sidebarOverlay.classList.remove(
-            "active"
-        );
-
-    }
-
-}
-
-
-/* =========================
-   OVERLAY CLICK
-========================= */
-
-sidebarOverlay.addEventListener(
-    "click",
-    () => {
-
-        closeMobileSidebar();
-
-    }
-);
 
 
 /* =========================
@@ -1324,10 +1272,9 @@ function initialize() {
 
     loadTheme();
 
+    sidebar.classList.add("hidden");
 
-    if (
-        conversations.length === 0
-    ) {
+    if (conversations.length === 0) {
 
         createChat();
 
@@ -1336,8 +1283,7 @@ function initialize() {
         if (
             !currentChatId ||
             !conversations.some(
-                chat =>
-                    chat.id === currentChatId
+                chat => chat.id === currentChatId
             )
         ) {
 
@@ -1346,19 +1292,12 @@ function initialize() {
 
         }
 
-
         renderChatList();
-
         renderCurrentChat();
-
         saveConversations();
 
     }
 
-
     autoGrow();
 
 }
-
-
-initialize();
