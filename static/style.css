@@ -1216,3 +1216,93 @@ body {
     }
 
 }
+/* =========================
+   EXTRA MOBILE FIX
+========================= */
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+
+    .app {
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    .main {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .topbar {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .chat-container {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .input-area {
+        width: calc(100% - 20px);
+        max-width: calc(100% - 20px);
+    }
+
+    #chatForm {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    #messageInput {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .message {
+        width: 100%;
+        max-width: 100%;
+        overflow-wrap: break-word;
+        word-break: break-word;
+    }
+
+    .message-content {
+        max-width: 100%;
+        overflow-wrap: break-word;
+        word-break: break-word;
+    }
+
+    .message.user .message-content {
+        max-width: 85%;
+    }
+
+    .code-block {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    .code-block pre {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    .welcome {
+        width: 100%;
+        max-width: 100%;
+        padding: 20px;
+    }
+
+    .welcome h1 {
+        font-size: 23px;
+    }
+
+}
