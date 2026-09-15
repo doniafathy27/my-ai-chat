@@ -1,3 +1,7 @@
+/* =========================
+   STORAGE
+========================= */
+
 let conversations =
     JSON.parse(localStorage.getItem("conversations")) || [];
 
@@ -34,6 +38,30 @@ const sidebar =
 
 const menuButton =
     document.getElementById("openSidebar");
+
+const sidebarOverlay =
+    document.getElementById("sidebarOverlay");
+
+const newChatButton =
+    document.getElementById("newChat");
+
+const clearChatButton =
+    document.getElementById("clearChat");
+
+const clearAllButton =
+    document.getElementById("clearAll");
+
+const themeToggle =
+    document.getElementById("themeToggle");
+
+const searchChats =
+    document.getElementById("searchChats");
+
+const exportTxt =
+    document.getElementById("exportTxt");
+
+const exportJson =
+    document.getElementById("exportJson");
 
 
 /* =========================
@@ -76,16 +104,15 @@ function createChat() {
 
     saveConversations();
 
-    renderSidebar();
+    renderChatList();
 
-    renderMessages();
+    renderCurrentChat();
 
-    messageInput.focus();
 }
 
 
 /* =========================
-   CURRENT CHAT
+   GET CURRENT CHAT
 ========================= */
 
 function getCurrentChat() {
@@ -93,18 +120,46 @@ function getCurrentChat() {
     return conversations.find(
         chat => chat.id === currentChatId
     );
+
 }
 
 
 /* =========================
-   SIDEBAR
+   OPEN CHAT
 ========================= */
 
-function renderSidebar() {
+function openChat(id) {
+
+    currentChatId = id;
+
+    saveConversations();
+
+    renderChatList();
+
+    renderCurrentChat();
+
+    closeMobileSidebar();
+
+}
+
+
+/* =========================
+   RENDER CHAT LIST
+========================= */
+
+function renderChatList(filter = "") {
 
     chatList.innerHTML = "";
 
-    conversations.forEach(chat => {
+    const filtered =
+        conversations.filter(chat =>
+            chat.title
+                .toLowerCase()
+                .includes(filter.toLowerCase())
+        );
+
+
+    filtered.forEach(chat => {
 
         const item =
             document.createElement("div");
@@ -118,76 +173,81 @@ function renderSidebar() {
         }
 
 
-        item.innerHTML = `
+        const title =
+            document.createElement("div");
 
-            <span class="chat-name">
-                💬 ${escapeHTML(chat.title)}
-            </span>
+        title.className = "chat-item-title";
 
-            <div class="chat-actions">
-
-                <button
-                    class="chat-action"
-                    title="Rename"
-                >
-                    ✎
-                </button>
-
-                <button
-                    class="chat-action delete-action"
-                    title="Delete"
-                >
-                    🗑
-                </button>
-
-            </div>
-
-        `;
+        title.textContent =
+            chat.title;
 
 
-        /* Open chat */
+        const actions =
+            document.createElement("div");
 
-        item.querySelector(".chat-name")
-            .onclick = () => {
-
-                currentChatId = chat.id;
-
-                saveConversations();
-
-                renderSidebar();
-
-                renderMessages();
-
-            };
+        actions.className = "chat-actions";
 
 
-        /* Rename */
+        const renameButton =
+            document.createElement("button");
 
-        item.querySelector(".chat-action")
-            .onclick = (event) => {
+        renameButton.textContent = "✎";
+
+        renameButton.title = "Rename";
+
+
+        renameButton.addEventListener(
+            "click",
+            event => {
 
                 event.stopPropagation();
 
                 renameChat(chat.id);
 
-            };
+            }
+        );
 
 
-        /* Delete */
+        const deleteButton =
+            document.createElement("button");
 
-        item.querySelector(".delete-action")
-            .onclick = (event) => {
+        deleteButton.textContent = "×";
+
+        deleteButton.title = "Delete";
+
+
+        deleteButton.addEventListener(
+            "click",
+            event => {
 
                 event.stopPropagation();
 
                 deleteChat(chat.id);
 
-            };
+            }
+        );
+
+
+        actions.appendChild(renameButton);
+
+        actions.appendChild(deleteButton);
+
+
+        item.appendChild(title);
+
+        item.appendChild(actions);
+
+
+        item.addEventListener(
+            "click",
+            () => openChat(chat.id)
+        );
 
 
         chatList.appendChild(item);
 
     });
+
 }
 
 
@@ -195,42 +255,44 @@ function renderSidebar() {
    RENAME CHAT
 ========================= */
 
-function renameChat(chatId) {
+function renameChat(id) {
 
     const chat =
         conversations.find(
-            chat => chat.id === chatId
+            chat => chat.id === id
         );
 
-    if (!chat) {
-        return;
-    }
+    if (!chat) return;
 
 
-    const newName =
+    const newTitle =
         prompt(
-            "Enter a new name:",
+            "Enter a new chat name:",
             chat.title
         );
 
 
     if (
-        newName === null ||
-        !newName.trim()
+        newTitle &&
+        newTitle.trim()
     ) {
-        return;
+
+        chat.title =
+            newTitle.trim();
+
+        saveConversations();
+
+        renderChatList();
+
+        if (id === currentChatId) {
+
+            chatTitle.textContent =
+                chat.title;
+
+        }
+
     }
 
-
-    chat.title =
-        newName.trim();
-
-
-    saveConversations();
-
-    renderSidebar();
-
-    renderMessages();
 }
 
 
@@ -238,45 +300,30 @@ function renameChat(chatId) {
    DELETE CHAT
 ========================= */
 
-function deleteChat(chatId) {
-
-    const chat =
-        conversations.find(
-            chat => chat.id === chatId
-        );
-
-    if (!chat) {
-        return;
-    }
-
+function deleteChat(id) {
 
     const confirmed =
         confirm(
-            `Delete "${chat.title}"?`
+            "Delete this chat?"
         );
 
-
-    if (!confirmed) {
-        return;
-    }
+    if (!confirmed) return;
 
 
     conversations =
         conversations.filter(
-            chat => chat.id !== chatId
+            chat => chat.id !== id
         );
 
 
-    if (currentChatId === chatId) {
+    if (currentChatId === id) {
 
         if (conversations.length > 0) {
 
             currentChatId =
                 conversations[0].id;
 
-        }
-
-        else {
+        } else {
 
             currentChatId = null;
 
@@ -287,160 +334,118 @@ function deleteChat(chatId) {
 
     saveConversations();
 
+    renderChatList();
 
-    if (!currentChatId) {
+    renderCurrentChat();
 
-        createChat();
-
-    }
-
-    else {
-
-        renderSidebar();
-
-        renderMessages();
-
-    }
 }
 
 
 /* =========================
-   RENDER MESSAGES
+   RENDER CURRENT CHAT
 ========================= */
 
-function renderMessages() {
+function renderCurrentChat() {
+
+    const chat =
+        getCurrentChat();
+
 
     chatContainer.innerHTML = "";
 
-    const chat = getCurrentChat();
 
-
-    if (!chat || chat.messages.length === 0) {
-
-        chatContainer.innerHTML = `
-
-            <div class="welcome">
-
-                <div class="welcome-icon">
-                    ✦
-                </div>
-
-                <h1>
-                    How can I help you?
-                </h1>
-
-                <p>
-                    Ask anything and start a conversation.
-                </p>
-
-            </div>
-
-        `;
+    if (!chat) {
 
         chatTitle.textContent =
-            chat ? chat.title : "New Chat";
+            "New Chat";
+
+
+        showWelcome();
 
         return;
+
     }
-
-
-    chat.messages.forEach(message => {
-
-        addMessageToUI(
-            message.role,
-            message.content
-        );
-
-    });
 
 
     chatTitle.textContent =
         chat.title;
 
+
+    if (chat.messages.length === 0) {
+
+        showWelcome();
+
+        return;
+
+    }
+
+
+    chat.messages.forEach(
+        message => {
+
+            addMessageToUI(
+                message.role,
+                message.content,
+                false
+            );
+
+        }
+    );
+
+
     scrollToBottom();
+
 }
 
 
 /* =========================
-   ADD MESSAGE
+   WELCOME
 ========================= */
 
-function addMessageToUI(role, content) {
+function showWelcome() {
 
-    const message =
+    const welcome =
         document.createElement("div");
 
-    message.className =
-        `message ${
-            role === "user"
-                ? "user-message"
-                : "ai-message"
-        }`;
+    welcome.className = "welcome";
+
+    welcome.innerHTML = `
+
+        <div class="welcome-icon">
+            ✦
+        </div>
+
+        <h1>
+            How can I help you?
+        </h1>
+
+        <p>
+            Ask anything and start a conversation.
+        </p>
+
+    `;
 
 
-    if (role === "user") {
+    chatContainer.appendChild(
+        welcome
+    );
 
-        message.innerHTML = `
-
-            <div class="bubble user-bubble">
-
-                ${escapeHTML(content)}
-
-            </div>
-
-            <div class="avatar user-avatar">
-                U
-            </div>
-
-        `;
-
-    }
-
-    else {
-
-        message.innerHTML = `
-
-            <div class="avatar ai-avatar">
-                AI
-            </div>
-
-            <div class="ai-content">
-
-                <div class="bubble ai-bubble markdown-content">
-
-                    ${renderMarkdown(content)}
-
-                </div>
-
-                <button
-                    class="copy-button"
-                >
-                    Copy
-                </button>
-
-            </div>
-
-        `;
+}
 
 
-        const copyButton =
-            message.querySelector(
-                ".copy-button"
-            );
+/* =========================
+   ESCAPE HTML
+========================= */
 
+function escapeHTML(text) {
 
-        copyButton.onclick = () => {
+    const div =
+        document.createElement("div");
 
-            copyResponse(copyButton);
+    div.textContent = text;
 
-        };
+    return div.innerHTML;
 
-    }
-
-
-    chatContainer.appendChild(message);
-
-    addCodeCopyButtons(message);
 }
 
 
@@ -450,14 +455,108 @@ function addMessageToUI(role, content) {
 
 function renderMarkdown(content) {
 
-    if (typeof marked === "undefined") {
+    if (
+        typeof marked !== "undefined"
+    ) {
 
-        return escapeHTML(content);
+        return marked.parse(
+            content
+        );
+
+    }
+
+    return escapeHTML(content)
+        .replace(/\n/g, "<br>");
+
+}
+
+
+/* =========================
+   ADD MESSAGE
+========================= */
+
+function addMessageToUI(
+    role,
+    content,
+    scroll = true
+) {
+
+    const message =
+        document.createElement("div");
+
+
+    message.className =
+        `message ${role === "user" ? "user" : "ai"}`;
+
+
+    const messageContent =
+        document.createElement("div");
+
+    messageContent.className =
+        "message-content";
+
+
+    if (role === "user") {
+
+        messageContent.innerHTML =
+            escapeHTML(content)
+                .replace(/\n/g, "<br>");
+
+    } else {
+
+        messageContent.innerHTML =
+            renderMarkdown(content);
+
+        addCodeCopyButtons(
+            messageContent
+        );
 
     }
 
 
-    return marked.parse(content);
+    if (role === "assistant") {
+
+        const header =
+            document.createElement("div");
+
+        header.className =
+            "message-header";
+
+        header.innerHTML = `
+
+            <div class="message-avatar">
+                ✦
+            </div>
+
+            CHAT DPT
+
+        `;
+
+
+        message.appendChild(header);
+
+    }
+
+
+    message.appendChild(
+        messageContent
+    );
+
+
+    chatContainer.appendChild(
+        message
+    );
+
+
+    if (scroll) {
+
+        scrollToBottom();
+
+    }
+
+
+    return message;
+
 }
 
 
@@ -465,69 +564,85 @@ function renderMarkdown(content) {
    CODE COPY
 ========================= */
 
-function addCodeCopyButtons(message) {
+function addCodeCopyButtons(container) {
 
-    const codeBlocks =
-        message.querySelectorAll(
-            ".markdown-content pre"
+    const blocks =
+        container.querySelectorAll("pre");
+
+
+    blocks.forEach(pre => {
+
+        const wrapper =
+            document.createElement("div");
+
+        wrapper.className =
+            "code-block";
+
+
+        pre.parentNode.insertBefore(
+            wrapper,
+            pre
         );
 
 
-    codeBlocks.forEach(pre => {
+        wrapper.appendChild(pre);
+
 
         const button =
             document.createElement("button");
 
         button.className =
-            "code-copy-button";
+            "copy-code-button";
 
         button.textContent =
-            "Copy code";
+            "Copy";
 
 
-        button.onclick = async () => {
+        button.addEventListener(
+            "click",
+            async () => {
 
-            const code =
-                pre.querySelector("code");
-
-
-            if (!code) {
-                return;
-            }
-
-
-            try {
+                const code =
+                    pre.innerText;
 
                 await navigator.clipboard.writeText(
-                    code.innerText
+                    code
                 );
 
                 button.textContent =
                     "Copied!";
 
 
-                setTimeout(() => {
+                setTimeout(
+                    () => {
 
-                    button.textContent =
-                        "Copy code";
+                        button.textContent =
+                            "Copy";
 
-                }, 1500);
-
-            }
-
-            catch {
-
-                button.textContent =
-                    "Failed";
+                    },
+                    1500
+                );
 
             }
+        );
 
-        };
 
-
-        pre.appendChild(button);
+        wrapper.appendChild(button);
 
     });
+
+}
+
+
+/* =========================
+   SCROLL
+========================= */
+
+function scrollToBottom() {
+
+    chatContainer.scrollTop =
+        chatContainer.scrollHeight;
+
 }
 
 
@@ -537,7 +652,7 @@ function addCodeCopyButtons(message) {
 
 chatForm.addEventListener(
     "submit",
-    async function(event) {
+    async event => {
 
         event.preventDefault();
 
@@ -546,18 +661,34 @@ chatForm.addEventListener(
             messageInput.value.trim();
 
 
-        if (!text) {
-            return;
-        }
+        if (!text) return;
 
 
         if (!currentChatId) {
+
             createChat();
+
         }
 
 
         const chat =
             getCurrentChat();
+
+
+        if (!chat) return;
+
+
+        if (
+            chat.messages.length === 0
+        ) {
+
+            chat.title =
+                text.substring(0, 30);
+
+            chatTitle.textContent =
+                chat.title;
+
+        }
 
 
         chat.messages.push({
@@ -569,29 +700,24 @@ chatForm.addEventListener(
         });
 
 
-        if (chat.messages.length === 1) {
+        saveConversations();
 
-            chat.title =
-                text.length > 30
-                    ? text.substring(0, 30) + "..."
-                    : text;
+        renderChatList();
 
-        }
+
+        addMessageToUI(
+            "user",
+            text
+        );
 
 
         messageInput.value = "";
 
-        autoGrowTextarea();
+        autoGrow();
 
 
-        renderSidebar();
-
-        renderMessages();
-
-
-        sendButton.disabled = false;
-
-        sendButton.textContent = "■";
+        sendButton.disabled =
+            true;
 
 
         showLoading();
@@ -604,135 +730,412 @@ chatForm.addEventListener(
         try {
 
             const response =
-                await fetch("/chat", {
+                await fetch(
+                    "/chat",
+                    {
 
-                    method: "POST",
+                        method: "POST",
 
-                    headers: {
+                        headers: {
 
-                        "Content-Type":
-                            "application/json"
+                            "Content-Type":
+                                "application/json"
 
-                    },
+                        },
 
-                    body: JSON.stringify({
+                        body: JSON.stringify({
 
-                        messages:
-                            chat.messages
+                            messages:
+                                chat.messages
 
-                    }),
+                        }),
 
-                    signal:
-                        currentController.signal
+                        signal:
+                            currentController.signal
 
-                });
+                    }
+                );
 
 
-            const result =
+            const data =
                 await response.json();
 
 
-            if (result.success) {
+            removeLoading();
 
-                chat.messages.push({
 
-                    role: "assistant",
+            if (!data.success) {
 
-                    content: result.message
+                addMessageToUI(
+                    "assistant",
+                    data.message
+                );
 
-                });
-
-            }
-
-            else {
-
-                chat.messages.push({
-
-                    role: "assistant",
-
-                    content:
-                        "⚠️ " + result.message
-
-                });
+                return;
 
             }
 
-        }
 
-        catch (error) {
+            chat.messages.push({
+
+                role: "assistant",
+
+                content:
+                    data.message
+
+            });
+
+
+            saveConversations();
+
+
+            addMessageToUI(
+                "assistant",
+                data.message
+            );
+
+
+        } catch (error) {
+
+            removeLoading();
+
 
             if (
-                error.name ===
-                "AbortError"
+                error.name !== "AbortError"
             ) {
 
-                /* Request was stopped */
-
-                chat.messages.push({
-
-                    role: "assistant",
-
-                    content:
-                        "⏹ Generation stopped."
-
-                });
+                addMessageToUI(
+                    "assistant",
+                    "Something went wrong. Please try again."
+                );
 
             }
 
-            else {
+        } finally {
 
-                chat.messages.push({
+            sendButton.disabled =
+                false;
 
-                    role: "assistant",
-
-                    content:
-                        "⚠️ Could not connect to the server."
-
-                });
-
-            }
+            currentController =
+                null;
 
         }
-
-
-        currentController = null;
-
-        removeLoading();
-
-        saveConversations();
-
-        renderMessages();
-
-        renderSidebar();
-
-        sendButton.disabled = false;
-
-        sendButton.textContent = "↑";
 
     }
 );
 
 
 /* =========================
-   STOP GENERATING
+   LOADING
 ========================= */
 
-sendButton.addEventListener(
+function showLoading() {
+
+    const loading =
+        document.createElement("div");
+
+    loading.className =
+        "message ai";
+
+    loading.id =
+        "loadingMessage";
+
+
+    loading.innerHTML = `
+
+        <div class="message-header">
+
+            <div class="message-avatar">
+                ✦
+            </div>
+
+            CHAT DPT
+
+        </div>
+
+        <div class="typing">
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </div>
+
+    `;
+
+
+    chatContainer.appendChild(
+        loading
+    );
+
+
+    scrollToBottom();
+
+}
+
+
+function removeLoading() {
+
+    const loading =
+        document.getElementById(
+            "loadingMessage"
+        );
+
+
+    if (loading) {
+
+        loading.remove();
+
+    }
+
+}
+
+
+/* =========================
+   NEW CHAT
+========================= */
+
+newChatButton.addEventListener(
     "click",
-    function(event) {
+    () => {
+
+        createChat();
+
+        closeMobileSidebar();
+
+    }
+);
+
+
+/* =========================
+   CLEAR CURRENT CHAT
+========================= */
+
+clearChatButton.addEventListener(
+    "click",
+    () => {
+
+        const chat =
+            getCurrentChat();
+
+
+        if (!chat) return;
+
+
+        const confirmed =
+            confirm(
+                "Clear this chat?"
+            );
+
+
+        if (!confirmed) return;
+
+
+        chat.messages = [];
+
+        saveConversations();
+
+        renderCurrentChat();
+
+    }
+);
+
+
+/* =========================
+   CLEAR ALL
+========================= */
+
+clearAllButton.addEventListener(
+    "click",
+    () => {
+
+        const confirmed =
+            confirm(
+                "Delete all chats?"
+            );
+
+
+        if (!confirmed) return;
+
+
+        conversations = [];
+
+        currentChatId = null;
+
+        saveConversations();
+
+        renderChatList();
+
+        renderCurrentChat();
+
+    }
+);
+
+
+/* =========================
+   SEARCH
+========================= */
+
+searchChats.addEventListener(
+    "input",
+    () => {
+
+        renderChatList(
+            searchChats.value
+        );
+
+    }
+);
+
+
+/* =========================
+   THEME
+========================= */
+
+themeToggle.addEventListener(
+    "click",
+    () => {
+
+        document.body.classList.toggle(
+            "dark"
+        );
+
+
+        const isDark =
+            document.body.classList.contains(
+                "dark"
+            );
+
+
+        localStorage.setItem(
+            "theme",
+            isDark
+                ? "dark"
+                : "light"
+        );
+
+
+        themeToggle.textContent =
+            isDark
+                ? "☀ Light Mode"
+                : "🌙 Dark Mode";
+
+    }
+);
+
+
+/* =========================
+   LOAD THEME
+========================= */
+
+function loadTheme() {
+
+    const theme =
+        localStorage.getItem(
+            "theme"
+        );
+
+
+    if (theme === "dark") {
+
+        document.body.classList.add(
+            "dark"
+        );
+
+        themeToggle.textContent =
+            "☀ Light Mode";
+
+    }
+
+}
+
+
+/* =========================
+   SIDEBAR TOGGLE
+========================= */
+
+menuButton.addEventListener(
+    "click",
+    () => {
+
+        sidebar.classList.toggle(
+            "hidden"
+        );
+
 
         if (
-            currentController &&
-            !currentController.signal.aborted
+            window.innerWidth <= 700
         ) {
 
-            event.preventDefault();
-
-            currentController.abort();
+            sidebarOverlay.classList.toggle(
+                "active"
+            );
 
         }
 
     }
+);
+
+
+/* =========================
+   CLOSE MOBILE SIDEBAR
+========================= */
+
+function closeMobileSidebar() {
+
+    if (
+        window.innerWidth <= 700
+    ) {
+
+        sidebar.classList.add(
+            "hidden"
+        );
+
+        sidebarOverlay.classList.remove(
+            "active"
+        );
+
+    }
+
+}
+
+
+/* =========================
+   OVERLAY CLICK
+========================= */
+
+sidebarOverlay.addEventListener(
+    "click",
+    () => {
+
+        closeMobileSidebar();
+
+    }
+);
+
+
+/* =========================
+   AUTO GROW TEXTAREA
+========================= */
+
+function autoGrow() {
+
+    messageInput.style.height =
+        "auto";
+
+
+    messageInput.style.height =
+        Math.min(
+            messageInput.scrollHeight,
+            160
+        ) + "px";
+
+}
+
+
+messageInput.addEventListener(
+    "input",
+    autoGrow
 );
 
 
@@ -742,7 +1145,7 @@ sendButton.addEventListener(
 
 messageInput.addEventListener(
     "keydown",
-    function(event) {
+    event => {
 
         if (
             event.key === "Enter" &&
@@ -760,285 +1163,127 @@ messageInput.addEventListener(
 
 
 /* =========================
-   AUTO GROW TEXTAREA
+   ABORT REQUEST
 ========================= */
 
-messageInput.addEventListener(
-    "input",
-    autoGrowTextarea
-);
+sendButton.addEventListener(
+    "click",
+    () => {
 
+        if (currentController) {
 
-function autoGrowTextarea() {
-
-    messageInput.style.height = "auto";
-
-    messageInput.style.height =
-        Math.min(
-            messageInput.scrollHeight,
-            150
-        ) + "px";
-}
-
-
-/* =========================
-   NEW CHAT
-========================= */
-
-document
-    .getElementById("newChat")
-    .addEventListener(
-        "click",
-        createChat
-    );
-
-
-/* =========================
-   CLEAR CURRENT CHAT
-========================= */
-
-document
-    .getElementById("clearChat")
-    .addEventListener(
-        "click",
-        function() {
-
-            const chat =
-                getCurrentChat();
-
-
-            if (!chat) {
-                return;
-            }
-
-
-            const confirmed =
-                confirm(
-                    "Clear this conversation?"
-                );
-
-
-            if (!confirmed) {
-                return;
-            }
-
-
-            chat.messages = [];
-
-            chat.title = "New Chat";
-
-
-            saveConversations();
-
-            renderSidebar();
-
-            renderMessages();
+            currentController.abort();
 
         }
-    );
-
-
-/* =========================
-   CLEAR ALL
-========================= */
-
-function clearAllConversations() {
-
-    if (!conversations.length) {
-        return;
-    }
-
-
-    const confirmed =
-        confirm(
-            "Delete all conversations?"
-        );
-
-
-    if (!confirmed) {
-        return;
-    }
-
-
-    conversations = [];
-
-    currentChatId = null;
-
-
-    saveConversations();
-
-    createChat();
-}
-
-
-/* =========================
-   COPY RESPONSE
-========================= */
-
-async function copyResponse(button) {
-
-    const bubble =
-        button
-            .closest(".ai-content")
-            .querySelector(".ai-bubble");
-
-
-    try {
-
-        await navigator.clipboard.writeText(
-            bubble.innerText
-        );
-
-
-        button.textContent =
-            "Copied!";
-
-
-        setTimeout(() => {
-
-            button.textContent =
-                "Copy";
-
-        }, 1500);
 
     }
-
-    catch {
-
-        button.textContent =
-            "Failed";
-
-    }
-}
-
-
-/* =========================
-   SEARCH CHATS
-========================= */
-
-function searchChats(query) {
-
-    const search =
-        query.trim().toLowerCase();
-
-
-    document
-        .querySelectorAll(".chat-item")
-        .forEach(item => {
-
-            const text =
-                item
-                    .querySelector(".chat-name")
-                    .textContent
-                    .toLowerCase();
-
-
-            item.style.display =
-                !search || text.includes(search)
-                    ? "flex"
-                    : "none";
-
-        });
-}
+);
 
 
 /* =========================
    EXPORT TXT
 ========================= */
 
-function exportChatTXT() {
+exportTxt.addEventListener(
+    "click",
+    () => {
 
-    const chat =
-        getCurrentChat();
+        const chat =
+            getCurrentChat();
 
 
-    if (
-        !chat ||
-        chat.messages.length === 0
-    ) {
+        if (
+            !chat ||
+            chat.messages.length === 0
+        ) {
 
-        alert("There is no conversation to export.");
+            alert(
+                "There is no chat to export."
+            );
 
-        return;
+            return;
+
+        }
+
+
+        let text =
+            `CHAT DPT - ${chat.title}\n\n`;
+
+
+        chat.messages.forEach(
+            message => {
+
+                const sender =
+                    message.role === "user"
+                        ? "You"
+                        : "CHAT DPT";
+
+
+                text +=
+                    `${sender}:\n${message.content}\n\n`;
+
+            }
+        );
+
+
+        downloadFile(
+            text,
+            `${chat.title}.txt`,
+            "text/plain"
+        );
+
     }
-
-
-    let content =
-        `My AI - ${chat.title}\n`;
-
-    content +=
-        "==============================\n\n";
-
-
-    chat.messages.forEach(message => {
-
-        const role =
-            message.role === "user"
-                ? "You"
-                : "AI";
-
-
-        content +=
-            `${role}:\n`;
-
-        content +=
-            `${message.content}\n\n`;
-
-    });
-
-
-    downloadFile(
-        content,
-        `${safeFileName(chat.title)}.txt`,
-        "text/plain"
-    );
-}
+);
 
 
 /* =========================
    EXPORT JSON
 ========================= */
 
-function exportChatJSON() {
+exportJson.addEventListener(
+    "click",
+    () => {
 
-    const chat =
-        getCurrentChat();
-
-
-    if (
-        !chat ||
-        chat.messages.length === 0
-    ) {
-
-        alert("There is no conversation to export.");
-
-        return;
-    }
+        const chat =
+            getCurrentChat();
 
 
-    const content =
-        JSON.stringify(
-            chat,
-            null,
-            2
+        if (!chat) {
+
+            alert(
+                "There is no chat to export."
+            );
+
+            return;
+
+        }
+
+
+        const json =
+            JSON.stringify(
+                chat,
+                null,
+                2
+            );
+
+
+        downloadFile(
+            json,
+            `${chat.title}.json`,
+            "application/json"
         );
 
-
-    downloadFile(
-        content,
-        `${safeFileName(chat.title)}.json`,
-        "application/json"
-    );
-}
+    }
+);
 
 
 /* =========================
-   DOWNLOAD FILE
+   DOWNLOAD
 ========================= */
 
 function downloadFile(
     content,
-    fileName,
+    filename,
     type
 ) {
 
@@ -1050,7 +1295,9 @@ function downloadFile(
 
 
     const url =
-        URL.createObjectURL(blob);
+        URL.createObjectURL(
+            blob
+        );
 
 
     const link =
@@ -1059,252 +1306,59 @@ function downloadFile(
 
     link.href = url;
 
-    link.download = fileName;
+    link.download = filename;
 
     link.click();
 
 
     URL.revokeObjectURL(url);
+
 }
 
 
 /* =========================
-   SAFE FILE NAME
+   INITIALIZE
 ========================= */
 
-function safeFileName(name) {
+function initialize() {
 
-    return name
-        .replace(/[<>:"/\\|?*]/g, "_")
-        .substring(0, 80);
-}
+    loadTheme();
 
 
-/* =========================
-   LOADING
-========================= */
-
-function showLoading() {
-
-    removeLoading();
-
-
-    const message =
-        document.createElement("div");
-
-    message.className =
-        "message ai-message";
-
-    message.id =
-        "loadingMessage";
-
-
-    message.innerHTML = `
-
-        <div class="avatar ai-avatar">
-            AI
-        </div>
-
-        <div class="bubble ai-bubble loading-bubble">
-
-            <span></span>
-            <span></span>
-            <span></span>
-
-        </div>
-
-    `;
-
-
-    chatContainer.appendChild(message);
-
-    scrollToBottom();
-}
-
-
-function removeLoading() {
-
-    const loading =
-        document.getElementById(
-            "loadingMessage"
-        );
-
-
-    if (loading) {
-        loading.remove();
-    }
-}
-
-
-/* =========================
-   THEME
-========================= */
-
-document
-    .getElementById("themeToggle")
-    .addEventListener(
-        "click",
-        function() {
-
-            document.body.classList.toggle(
-                "light"
-            );
-
-
-            const isLight =
-                document.body.classList.contains(
-                    "light"
-                );
-
-
-            this.textContent =
-                isLight
-                    ? "🌙 Dark Mode"
-                    : "☀ Light Mode";
-
-
-            localStorage.setItem(
-                "theme",
-                isLight
-                    ? "light"
-                    : "dark"
-            );
-
-        }
-    );
-
-
-if (
-    localStorage.getItem("theme")
-    === "light"
-) {
-
-    document.body.classList.add("light");
-
-
-    document.getElementById(
-        "themeToggle"
-    ).textContent =
-        "🌙 Dark Mode";
-}
-
-
-/* =========================
-   SIDEBAR TOGGLE
-========================= */
-
-menuButton.addEventListener(
-    "click",
-    function() {
-
-        sidebar.classList.toggle(
-            "hidden"
-        );
-
-    }
-);
-
-
-/* =========================
-   SCROLL
-========================= */
-
-function scrollToBottom() {
-
-    chatContainer.scrollTop =
-        chatContainer.scrollHeight;
-}
-
-
-/* =========================
-   SECURITY
-========================= */
-
-function escapeHTML(text) {
-
-    const div =
-        document.createElement("div");
-
-    div.textContent =
-        text;
-
-    return div.innerHTML;
-}
-
-/* =========================
-   SEARCH INPUT
-========================= */
-
-document
-    .getElementById("searchChats")
-    .addEventListener(
-        "input",
-        function() {
-
-            searchChats(this.value);
-
-        }
-    );
-
-
-/* =========================
-   EXPORT BUTTONS
-========================= */
-
-document
-    .getElementById("exportTxt")
-    .addEventListener(
-        "click",
-        exportChatTXT
-    );
-
-
-document
-    .getElementById("exportJson")
-    .addEventListener(
-        "click",
-        exportChatJSON
-    );
-
-
-/* =========================
-   CLEAR ALL BUTTON
-========================= */
-
-document
-    .getElementById("clearAll")
-    .addEventListener(
-        "click",
-        clearAllConversations
-    );
-/* =========================
-   INITIAL LOAD
-========================= */
-
-if (!currentChatId) {
-
-    createChat();
-
-}
-
-else {
-
-    const existingChat =
-        getCurrentChat();
-
-
-    if (!existingChat) {
+    if (
+        conversations.length === 0
+    ) {
 
         createChat();
 
+    } else {
+
+        if (
+            !currentChatId ||
+            !conversations.some(
+                chat =>
+                    chat.id === currentChatId
+            )
+        ) {
+
+            currentChatId =
+                conversations[0].id;
+
+        }
+
+
+        renderChatList();
+
+        renderCurrentChat();
+
+        saveConversations();
+
     }
 
-    else {
 
-        renderSidebar();
-
-        renderMessages();
-
-    }
+    autoGrow();
 
 }
+
+
+initialize();

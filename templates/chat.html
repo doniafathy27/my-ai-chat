@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
@@ -11,7 +10,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>My AI</title>
+    <title>CHAT DPT</title>
 
     <link
         rel="stylesheet"
@@ -32,10 +31,9 @@
 
     <aside class="sidebar" id="sidebar">
 
-
         <div class="sidebar-header">
 
-            <h2>My AI</h2>
+            <h2>CHAT DPT</h2>
 
         </div>
 
@@ -72,8 +70,7 @@
         <div
             class="chat-list"
             id="chatList"
-        >
-        </div>
+        ></div>
 
 
         <!-- Sidebar Bottom -->
@@ -92,16 +89,12 @@
 
                 <div class="export-buttons">
 
-                    <button
-                        id="exportTxt"
-                    >
+                    <button id="exportTxt">
                         TXT
                     </button>
 
 
-                    <button
-                        id="exportJson"
-                    >
+                    <button id="exportJson">
                         JSON
                     </button>
 
@@ -148,7 +141,6 @@
 
         </div>
 
-
     </aside>
 
 
@@ -164,10 +156,11 @@
 
         <header class="topbar">
 
-
             <button
                 class="menu-button"
                 id="openSidebar"
+                type="button"
+                aria-label="Toggle sidebar"
             >
 
                 ☰
@@ -179,8 +172,16 @@
                 New Chat
             </h3>
 
-
         </header>
+
+
+
+        <!-- Mobile Overlay -->
+
+        <div
+            class="sidebar-overlay"
+            id="sidebarOverlay"
+        ></div>
 
 
 
@@ -193,12 +194,10 @@
             id="chatContainer"
         >
 
-
             <div
                 class="welcome"
                 id="welcome"
             >
-
 
                 <div class="welcome-icon">
                     ✦
@@ -214,9 +213,7 @@
                     Ask anything and start a conversation.
                 </p>
 
-
             </div>
-
 
         </section>
 
@@ -228,9 +225,7 @@
 
         <div class="input-area">
 
-
             <form id="chatForm">
-
 
                 <textarea
                     id="messageInput"
@@ -248,7 +243,6 @@
 
                 </button>
 
-
             </form>
 
 
@@ -259,12 +253,10 @@
 
             </p>
 
-
         </div>
 
 
     </main>
-
 
 </div>
 
