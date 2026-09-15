@@ -1,4 +1,4 @@
-My AI — GenAI Chat Application
+# CHAT DPT 
 
 A ChatGPT-style conversational AI web application built with Flask and Hugging Face APIs.
 
